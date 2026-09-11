@@ -29,6 +29,11 @@ from workers.file_downloader import WeChatFileDownloader
 async def lifespan(app: FastAPI):
     logger.info(f'{AppConfig.app_name} 开始启动')
     FrameworkService.mark_started()
+    Path(StorageConfig.storage_dir).mkdir(parents=True, exist_ok=True)
+    if not getattr(app.state, 'static_routes_mounted', False):
+        app.mount('/static', StaticFiles(directory=StorageConfig.storage_dir, check_dir=False), name='static')
+        app.mount('/webui-static', StaticFiles(directory=_webui_dir), name='webui-static')
+        app.state.static_routes_mounted = True
     await init_create_table()
     ############################## 数据库迁移 ##############################
     try:
@@ -93,13 +98,8 @@ handle_middleware(app)
 #################################### 注册异常 ####################################
 handle_exception(app)
 
-#################################### 静态文件 ####################################
-Path(StorageConfig.storage_dir).mkdir(parents=True, exist_ok=True)
-app.mount('/static', StaticFiles(directory=StorageConfig.storage_dir), name='static')
-
 #################################### WebUI 静态资源 ####################################
 _webui_dir = Path(__file__).resolve().parent / 'module_api' / 'v1' / 'assets' / 'webui'
-app.mount('/webui-static', StaticFiles(directory=_webui_dir), name='webui-static')
 
 #################################### 路由列表 ####################################
 controller_list = [

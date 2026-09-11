@@ -66,7 +66,6 @@ class FileService:
         if not result.success:
             file_row.status = 'failed'
             file_row.error = result.error or 'unknown'
-            await db.commit()
             logger.warning(
                 f'[file] download failed source={unified.source} '
                 f'msg={unified.source_message_id} error={result.error}'
@@ -83,7 +82,6 @@ class FileService:
             file_row.error = f'write failed: {exc}'
             logger.warning(f'[file] write failed: {exc}')
 
-        await db.commit()
         await MessageDao.update_status(db, unified.id, status='downloaded', file_id=file_row.id)
 
         logger.info(

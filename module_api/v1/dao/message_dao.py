@@ -74,7 +74,7 @@ class MessageDao:
             content = json.loads(msg.content_json or '{}')
             content['file_id'] = file_id
             msg.content_json = json.dumps(content, ensure_ascii=False)
-        await db.commit()
+        await db.flush()
 
     @classmethod
     def is_duplicate_error(cls, exc: IntegrityError) -> bool:

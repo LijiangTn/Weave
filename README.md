@@ -1,19 +1,42 @@
 <div align="center">
-  <img src="./logo.png" alt="Weave Logo" width="160" />
+  <img src="./logo.png" alt="Weave Logo" width="220" />
 </div>
 
-# Weave
+<div align="center">
+  <h1>Weave</h1>
+</div>
 
-把微信「文件传输助手」变成可编程的本地同步服务。
+<div align="center">
+  <strong>把微信「文件传输助手」变成本地优先的可编程同步入口。</strong>
+</div>
 
-Weave 是一个本地运行的 FastAPI 后端，负责微信登录、消息同步、文件落盘、会话持久化，并对外提供与 `wx-filehelper-api` 对齐的接口协议，方便上层客户端直接接入。
+<br />
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.124-009688.svg)](https://fastapi.tiangolo.com)
-[![SQLAlchemy 2.0](https://img.shields.io/badge/SQLAlchemy-2.0-red.svg)](https://www.sqlalchemy.org)
-[![Based on wx-filehelper-api](https://img.shields.io/badge/based%20on-wx--filehelper--api-lightgrey.svg)](https://github.com/CJackHwang/wx-filehelper-api)
-[![Works with obsidian-wechat-inbox](https://img.shields.io/badge/works%20with-obsidian--wechat--inbox-07C160.svg)](https://github.com/LijiangTn/obsidian-wechat-inbox)
+<div align="center">
+  Weave 是一个本地运行的 FastAPI 后端，负责微信登录、消息同步、文件落盘、会话持久化，
+  并对外提供与 <code>wx-filehelper-api</code> 对齐的接口协议。
+</div>
+
+<br />
+
+<div align="center">
+  推荐与 <a href="https://github.com/LijiangTn/obsidian-wechat-inbox">obsidian-wechat-inbox</a> 搭配使用，
+  把文本、图片、文件稳定接入 Obsidian，形成可检索、可归档、可复用的本地知识收件箱。
+</div>
+
+<br />
+
+<div align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
+  <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.9%2B-blue.svg" alt="Python 3.9+" /></a>
+  <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FastAPI-0.124-009688.svg" alt="FastAPI 0.124" /></a>
+  <a href="https://www.sqlalchemy.org"><img src="https://img.shields.io/badge/SQLAlchemy-2.0-red.svg" alt="SQLAlchemy 2.0" /></a>
+  <a href="https://github.com/LijiangTn/obsidian-wechat-inbox"><img src="https://img.shields.io/badge/Obsidian-Plugin-7C3AED.svg" alt="Obsidian Plugin" /></a>
+  <a href="https://github.com/CJackHwang/wx-filehelper-api"><img src="https://img.shields.io/badge/Based%20on-wx--filehelper--api-lightgrey.svg" alt="Based on wx-filehelper-api" /></a>
+  <img src="https://img.shields.io/badge/Local--first-Privacy%20friendly-22C55E.svg" alt="Local-first Privacy friendly" />
+</div>
+
+---
 
 ## 项目定位
 

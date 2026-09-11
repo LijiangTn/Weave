@@ -32,33 +32,35 @@ class MessagePipelineService:
         unified: UnifiedMessage,
         downloader: WeChatFileDownloader,
     ) -> None:
-        saved = await MessageService.persist(db, unified)
-        if saved is None:
-            return
-        raw = unified.metadata.get('raw', {}) if isinstance(unified.metadata, dict) else {}
-        stored_message = await MessageStoreService.persist_received_message(
-            db,
-            unified,
-            raw=raw,
-        )
-        await MessageStoreService.push_webhook_if_needed(db, stored_message)
-        await db.commit()
-        if unified.type not in {MessageType.IMAGE, MessageType.FILE}:
-            return
-        stored_file = await FileService.download_and_attach(
-            db,
-            unified,
-            raw,
-            downloader,
-            StorageConfig,
-        )
-        if stored_file is not None and stored_file.status == 'downloaded':
-            absolute_path = str(Path(StorageConfig.storage_dir) / stored_file.path)
-            await MessageStoreService.persist_downloaded_file(
+        try:
+            saved = await MessageService.persist(db, unified)
+            if saved is None:
+                return
+            raw = unified.metadata.get('raw', {}) if isinstance(unified.metadata, dict) else {}
+            stored_message = await MessageStoreService.persist_received_message(
                 db,
                 unified,
-                file_path=absolute_path,
-                file_size=int(stored_file.size or 0),
-                mime_type=stored_file.mime_type,
+                raw=raw,
             )
+            await MessageStoreService.push_webhook_if_needed(db, stored_message)
+            if unified.type in {MessageType.IMAGE, MessageType.FILE}:
+                stored_file = await FileService.download_and_attach(
+                    db,
+                    unified,
+                    raw,
+                    downloader,
+                    StorageConfig,
+                )
+                if stored_file is not None and stored_file.status == 'downloaded':
+                    absolute_path = str(Path(StorageConfig.storage_dir) / stored_file.path)
+                    await MessageStoreService.persist_downloaded_file(
+                        db,
+                        unified,
+                        file_path=absolute_path,
+                        file_size=int(stored_file.size or 0),
+                        mime_type=stored_file.mime_type,
+                    )
             await db.commit()
+        except Exception:
+            await db.rollback()
+            raise
