@@ -13,15 +13,15 @@
 <br />
 
 <div align="center">
-  Weave 是一个本地运行的 FastAPI 后端，负责微信登录、消息同步、文件落盘、会话持久化，
-  并对外提供与 <code>wx-filehelper-api</code> 对齐的接口协议。
+  Weave 主要解决的是：如何把微信「文件传输助手」里的临时消息，
+  稳定变成可保存、可归档、可继续加工的本地输入流。
 </div>
 
 <br />
 
 <div align="center">
-  推荐与 <a href="https://github.com/LijiangTn/obsidian-wechat-inbox">obsidian-wechat-inbox</a> 搭配使用，
-  把文本、图片、文件稳定接入 Obsidian，形成可检索、可归档、可复用的本地知识收件箱。
+  目前它已经解决了扫码登录、消息同步、文本发送、图片与文件接收落盘、
+  本地消息持久化，以及与 <a href="https://github.com/LijiangTn/obsidian-wechat-inbox">obsidian-wechat-inbox</a> 的配套接入问题。
 </div>
 
 <br />
@@ -105,7 +105,7 @@ Weave 推荐与 [LijiangTn/obsidian-wechat-inbox](https://github.com/LijiangTn/o
 要求 Python 3.9 及以上。
 
 ```bash
-git clone https://github.com/yourname/weave.git
+git clone https://github.com/LijiangTn/Weave.git
 cd weave
 python -m venv .venv
 ```

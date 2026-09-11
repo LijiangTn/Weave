@@ -92,8 +92,8 @@ class FileStoreService:
         file_info = await MessageStoreService.get_file(db, msg_id)
         if not file_info:
             raise FileNotFoundError('File not found')
-        path = Path(file_info['file_path'])
-        if path.exists():
+        path = MessageStoreService.resolve_file_path(file_info['file_path'])
+        if path is not None and path.exists():
             path.unlink()
         return {'status': 'deleted', 'msg_id': msg_id}
 
@@ -105,8 +105,8 @@ class FileStoreService:
             if item['created_at'] >= cutoff:
                 continue
             try:
-                path = Path(item['file_path'])
-                if path.exists():
+                path = MessageStoreService.resolve_file_path(item['file_path'])
+                if path is not None and path.exists():
                     path.unlink()
             except Exception:
                 pass

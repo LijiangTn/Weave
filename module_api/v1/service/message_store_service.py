@@ -10,6 +10,7 @@ from typing import Any
 import httpx
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from config.env import StorageConfig
 from module_api.v1.dao.compat_message_store_dao import CompatMessageStoreDao
 from module_api.v1.entity.do.compat_message_do import CompatMessage
 from module_api.v1.entity.vo.message_vo import MessageType, UnifiedMessage
@@ -197,7 +198,7 @@ class MessageStoreService:
             'id': row.id,
             'msg_id': row.msg_id,
             'file_name': row.file_name,
-            'file_path': row.file_path,
+            'file_path': cls._normalize_storage_path(row.file_path),
             'file_size': row.file_size or 0,
             'mime_type': row.mime_type,
             'md5': row.md5,
@@ -219,7 +220,7 @@ class MessageStoreService:
                 'id': row.id,
                 'msg_id': row.msg_id,
                 'file_name': row.file_name,
-                'file_path': row.file_path,
+                'file_path': cls._normalize_storage_path(row.file_path),
                 'file_size': row.file_size or 0,
                 'mime_type': row.mime_type,
                 'md5': row.md5,
@@ -258,6 +259,15 @@ class MessageStoreService:
             except OSError:
                 stats['db_size_bytes'] = 0
         return stats
+
+    @classmethod
+    def resolve_file_path(cls, file_path: str | None) -> Path | None:
+        if not file_path:
+            return None
+        candidate = Path(file_path)
+        if candidate.is_absolute():
+            return candidate
+        return Path(StorageConfig.storage_dir) / candidate
 
     @classmethod
     async def set_webhook(cls, db: AsyncSession, url: str) -> None:
@@ -318,3 +328,24 @@ class MessageStoreService:
             'raw_data': row.raw_data,
             'extra': row.extra,
         }
+
+    @classmethod
+    def _normalize_storage_path(cls, file_path: str | None) -> str | None:
+        if not file_path:
+            return file_path
+        candidate = Path(file_path)
+        storage_dir = Path(StorageConfig.storage_dir)
+        normalized = cls._relative_to_storage_dir(candidate, storage_dir)
+        return normalized.replace('\\', '/')
+
+    @staticmethod
+    def _relative_to_storage_dir(candidate: Path, storage_dir: Path) -> str:
+        if candidate.is_absolute():
+            try:
+                return str(candidate.relative_to(storage_dir.resolve()))
+            except ValueError:
+                return str(candidate)
+        try:
+            return str(candidate.relative_to(storage_dir))
+        except ValueError:
+            return str(candidate)
