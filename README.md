@@ -326,21 +326,6 @@ Weave 的设计目标是本地优先，但仍建议注意以下事项：
 - 不要忽视 `skey`、`sid`、`pass_ticket` 等会话字段的泄漏风险
 - 如果启用了附件自动下载，请留意 `storage/` 目录中的敏感文件
 
-## 开发说明
-
-常见开发动作：
-
-```bash
-pytest -q
-```
-
-```bash
-pytest tests/test_wechat_protocol.py -q
-```
-
-```bash
-python main.py
-```
 
 ## 与 `wx-filehelper-api` 的关系
 
@@ -354,6 +339,14 @@ Weave 不是对原项目的简单改名复制，而是在接口兼容目标下�
 - 增加了 WebUI 调试能力、Trace 能力和更规范的工程组织
 
 但对外接口、返回结构和数据库语义，仍然以 `wx-filehelper-api` 的兼容目标为核心。
+
+## 支持与反馈
+
+如果这个项目对你有帮助，欢迎点一颗 ⭐ Star——这是它持续迭代的最大动力。
+
+使用中遇到问题，或有更好的想法与改进建议，欢迎提交 [Issues](https://github.com/LijiangTn/Weave/issues)。无论是 Bug 反馈、功能建议、文档疑问还是使用经验，都会对这个项目有帮助。
+
+没有别的期望，只希望大家能把 Weave 用起来。它现在还不够完善，但只要大家愿意用、愿意提想法，我会抽时间持续打磨。
 
 ## License
 
