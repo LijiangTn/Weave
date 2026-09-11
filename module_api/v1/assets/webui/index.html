@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{app_name}} · 控制台</title>
+  <link rel="stylesheet" href="/webui-static/css/app.css" />
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <!-- ============ 顶栏 ============ -->
+    <header class="topbar">
+        <div class="topbar-left">
+          <div class="brand">
+            <img class="brand-mark" src="/webui-static/img/logo.png" alt="{{app_name}}" />
+            <span class="brand-name">{{app_name}}</span>
+            <span class="brand-version">v{{version}}</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span class="status-pill" id="connPill" data-state="loading">
+            <span class="status-dot"></span>
+            <span class="status-text">连接中</span>
+          </span>
+          <button class="btn btn-sm btn-quiet" id="themeBtn" title="切换主题">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <path fill="currentColor" d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0Zm0 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM8 3v5l3.5 2 .75-1.3L9 7V3H8Z"/>
+            </svg>
+            <span class="hide-sm">主题</span>
+          </button>
+          <button class="btn btn-sm btn-quiet" id="refreshBtn" title="刷新全部">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <path fill="currentColor" d="M8 2.5a5.5 5.5 0 1 0 4.546 8.414.75.75 0 1 1 1.108 1.011A7 7 0 1 1 8 1v1.5Zm0-1.5v3h3v-1.2l-1.55 1.55A5.5 5.5 0 0 0 8 1Z"/>
+            </svg>
+            <span class="hide-sm">刷新</span>
+          </button>
+        </div>
+      </header>
+
+    <!-- ============ 主体 ============ -->
+    <div class="main">
+      <!-- 侧栏 -->
+      <nav class="sidebar" aria-label="主导航">
+        <ul class="nav-list">
+          <li><button class="nav-item is-active" data-tab="dashboard">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1 0-1.5Z"/></svg>
+            <span>概览</span>
+          </button></li>
+          <li><button class="nav-item" data-tab="messages">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.57 2.57A.75.75 0 0 1 4 15v-2H1.75A1.75 1.75 0 0 1 0 11.25v-8.5C0 1.784.784 1 1.75 1Zm12.5 10.5v-8.5h-12.5v8.5h3a.75.75 0 0 1 .75.75v1.19l2.72-2.72a.75.75 0 0 1 .53-.22h5.25Z"/></svg>
+            <span>消息流</span>
+            <span class="nav-count" id="msgCount" hidden></span>
+          </button></li>
+          <li><button class="nav-item" data-tab="botapi">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M2 4.5a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0Zm2.5-.5a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1ZM9 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-1.5 3a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6.5-1.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
+            <span>Bot API 调试</span>
+          </button></li>
+          <li><button class="nav-item" data-tab="files">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M2 1.75C2 .784 2.784 0 3.75 0h8.5C13.216 0 14 .784 14 1.75v12.5A1.75 1.75 0 0 1 12.25 16h-8.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm1 0v1h6V5H5Z"/></svg>
+            <span>文件存储</span>
+          </button></li>
+          <li><button class="nav-item" data-tab="framework">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M1.5 1.75V13.5h13.25a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-1.06-1.06a.75.75 0 0 0-1.06 0L8.75 8.19l-2.97-2.97a.75.75 0 0 0-1.06 0L3.66 6.28a.75.75 0 0 0 0 1.06l4.5 4.5a.75.75 0 0 0 1.06 0L15.78 5.29a.75.75 0 0 0 0-1.06Z"/></svg>
+            <span>框架 / 任务</span>
+          </button></li>
+          <li><button class="nav-item" data-tab="trace">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M5.22 14.78a.75.75 0 0 0 1.06-1.06L4.56 12h6.94a3.5 3.5 0 1 1 0-7H9.5a.5.5 0 0 1 0-1h2a4.5 4.5 0 1 1 0 9H4.56l1.72 1.72a.75.75 0 0 0-1.06 1.06L2.94 15l-2.47-2.47Z"/></svg>
+            <span>协议追踪</span>
+          </button></li>
+        </ul>
+        <div class="sidebar-foot">
+          <div class="kv"><span class="kv-key">运行时长</span><span class="kv-val" id="uptime">--</span></div>
+          <div class="kv"><span class="kv-key">入口</span><span class="kv-val" id="entryHost">--</span></div>
+          <div class="kv"><span class="kv-key">登录码</span><span class="kv-val" id="loginCode">--</span></div>
+        </div>
+      </nav>
+
+      <!-- 内容区 -->
+      <main class="content">
+        <!-- ============ 概览 ============ -->
+        <section class="page is-active" data-page="dashboard">
+          <div class="page-header">
+            <h1 class="page-title">概览</h1>
+            <p class="page-sub">当前实例状态、二维码登录与常用调试入口。</p>
+          </div>
+
+          <!-- 统计卡 -->
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">累计消息</div>
+              <div class="stat-value" id="statMessages">0</div>
+              <div class="stat-foot" id="statMessagesFoot">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">今日新增</div>
+              <div class="stat-value" id="statToday">0</div>
+              <div class="stat-foot" id="statTodayFoot">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">存储文件</div>
+              <div class="stat-value" id="statFiles">0</div>
+              <div class="stat-foot" id="statFilesFoot">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">活跃插件 / 任务</div>
+              <div class="stat-value" id="statPlugTask">0 / 0</div>
+              <div class="stat-foot" id="statPlugTaskFoot">—</div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <!-- 二维码 -->
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">登录二维码</h2>
+                <div class="panel-actions">
+                  <button class="btn btn-sm" id="btnRefreshQr">刷新</button>
+                </div>
+              </header>
+              <div class="panel-body qr-wrap">
+                <div class="qr-card" id="qrCard" data-state="loading">
+                  <div class="qr-spinner" aria-hidden="true"></div>
+                  <img class="qr-img" id="qrImg" alt="微信登录二维码" />
+                </div>
+                <div class="qr-meta">
+                  <div class="qr-status" id="qrStatus">等待二维码…</div>
+                  <div class="qr-tip" id="qrTip">二维码 240 秒内有效，过期请刷新。</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 快速调试 -->
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">快速调试</h2>
+              </header>
+              <div class="panel-body">
+                <div class="form-row">
+                  <label class="form-label" for="quickText">发送文本 (POST /send)</label>
+                  <div class="input-group">
+                    <input type="text" id="quickText" class="input" placeholder="Hello Weave…" autocomplete="off" />
+                    <button class="btn btn-primary" id="btnSendQuick">发送</button>
+                  </div>
+                </div>
+                <div class="quick-grid">
+                  <button class="quick-btn" data-cmd="/status">
+                    <span class="quick-label">/status</span>
+                    <span class="quick-hint">查看状态</span>
+                  </button>
+                  <button class="quick-btn" data-cmd="/ping">
+                    <span class="quick-label">/ping</span>
+                    <span class="quick-hint">连通性测试</span>
+                  </button>
+                  <button class="quick-btn" id="btnSaveSession">
+                    <span class="quick-label">持久化 Session</span>
+                    <span class="quick-hint">加密落盘</span>
+                  </button>
+                  <button class="quick-btn" id="btnReloadPlugins">
+                    <span class="quick-label">热重载插件</span>
+                    <span class="quick-hint">/plugins/reload</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ============ 消息流 ============ -->
+        <section class="page" data-page="messages">
+          <div class="page-header">
+            <h1 class="page-title">消息流</h1>
+            <p class="page-sub">查看已落库的历史消息，可按类型筛选。</p>
+          </div>
+
+          <article class="panel">
+            <header class="panel-head">
+              <div class="toolbar">
+                <div class="seg" role="tablist" aria-label="类型筛选">
+                  <button class="seg-item is-active" data-type="">全部</button>
+                  <button class="seg-item" data-type="text">文本</button>
+                  <button class="seg-item" data-type="image">图片</button>
+                  <button class="seg-item" data-type="file">文件</button>
+                </div>
+                <div class="toolbar-spacer"></div>
+                <button class="btn btn-sm" id="btnLoadMore">加载更多</button>
+              </div>
+            </header>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="col-time">时间</th>
+                    <th class="col-type">类型</th>
+                    <th>内容</th>
+                    <th class="col-action">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="msgTbody">
+                  <tr class="empty-row"><td colspan="4">暂无消息</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============ Bot API ============ -->
+        <section class="page" data-page="botapi">
+          <div class="page-header">
+            <h1 class="page-title">Bot API 调试</h1>
+            <p class="page-sub">以 Telegram 兼容协议调用本地接口，自带响应查看器与上传调试。</p>
+          </div>
+
+          <div class="two-col two-col-wide">
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">请求构造</h2>
+              </header>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="form-row">
+                    <label class="form-label" for="epSelect">Endpoint</label>
+                    <select id="epSelect" class="select"></select>
+                  </div>
+                  <div class="form-row">
+                    <label class="form-label">Method</label>
+                    <div class="input is-static" id="epMethod">POST</div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <label class="form-label" for="payload">JSON Payload</label>
+                  <textarea id="payload" class="textarea mono" spellcheck="false"></textarea>
+                </div>
+                <div class="form-actions">
+                  <button class="btn" id="btnResetPayload">重置</button>
+                  <button class="btn btn-primary" id="btnSendRequest">
+                    <span id="btnSendLabel">发送请求</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">响应</h2>
+                <div class="panel-actions">
+                  <span class="latency" id="latency"></span>
+                  <button class="btn btn-sm" id="btnCopyResp">复制</button>
+                </div>
+              </header>
+              <div class="panel-body panel-body-flat">
+                <pre class="resp mono" id="respView">// 等待发送…</pre>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel">
+            <header class="panel-head">
+              <h2 class="panel-title">文件上传 (/bot/sendDocument/upload)</h2>
+            </header>
+            <div class="panel-body">
+              <div class="upload-row">
+                <label class="dropzone" id="dropzone">
+                  <input type="file" id="fileInput" hidden />
+                  <svg viewBox="0 0 16 16" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-8.5C1 2.784 1.784 2 2.75 2h5.5a.75.75 0 0 1 0 1.5h-5.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 14.25 14H2.75Z M9 1.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V3.56L8.53 8.53a.75.75 0 0 1-1.06-1.06l4.47-4.47H9.75A.75.75 0 0 1 9 2.25Z"/></svg>
+                  <div class="dz-title" id="dzTitle">点击或拖拽文件到此处</div>
+                  <div class="dz-hint">最大受后端限制</div>
+                </label>
+                <div class="upload-side">
+                  <input type="text" id="caption" class="input" placeholder="文件备注 (caption)…" />
+                  <button class="btn btn-primary btn-block" id="btnUpload">上传并发送</button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============ 文件存储 ============ -->
+        <section class="page" data-page="files">
+          <div class="page-header">
+            <h1 class="page-title">文件存储</h1>
+            <p class="page-sub">来自微信聊天的下载文件，可清理或单独删除。</p>
+          </div>
+
+          <article class="panel">
+            <header class="panel-head">
+              <h2 class="panel-title">文件列表</h2>
+              <div class="panel-actions">
+                <button class="btn btn-sm btn-danger" id="btnCleanup">清理 30 天前</button>
+              </div>
+            </header>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>文件名</th>
+                    <th class="col-num">大小</th>
+                    <th class="col-time">时间</th>
+                    <th class="col-state">状态</th>
+                    <th class="col-action">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="fileTbody">
+                  <tr class="empty-row"><td colspan="5">暂无文件</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- ============ 框架 / 任务 ============ -->
+        <section class="page" data-page="framework">
+          <div class="page-header">
+            <h1 class="page-title">框架与任务</h1>
+            <p class="page-sub">定时任务管理、插件状态查看。</p>
+          </div>
+
+          <div class="two-col two-col-wide">
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">定时任务</h2>
+                <div class="panel-actions">
+                  <button class="btn btn-sm btn-primary" id="btnNewTask">新建任务</button>
+                </div>
+              </header>
+              <div class="panel-body panel-body-flat">
+                <ul class="task-list" id="taskList">
+                  <li class="empty-row">暂无定时任务</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="panel">
+              <header class="panel-head">
+                <h2 class="panel-title">已加载插件</h2>
+              </header>
+              <div class="panel-body panel-body-flat">
+                <ul class="plugin-list" id="pluginList">
+                  <li class="empty-row">加载中…</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ============ 协议追踪 ============ -->
+        <section class="page" data-page="trace">
+          <div class="page-header">
+            <h1 class="page-title">协议追踪</h1>
+            <p class="page-sub">最近 HTTP 请求 / 响应摘要，需启用 WECHAT_TRACE_ENABLED。</p>
+          </div>
+
+          <article class="panel panel-fill">
+            <header class="panel-head">
+              <h2 class="panel-title">Trace 列表</h2>
+              <div class="panel-actions">
+                <button class="btn btn-sm" id="btnClearTrace">清空</button>
+                <button class="btn btn-sm btn-primary" id="btnRefreshTrace">刷新</button>
+              </div>
+            </header>
+            <div class="panel-body panel-body-flat panel-body-scroll">
+              <div class="trace-stream" id="traceStream">
+                <div class="empty-row">暂无记录</div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <!-- ============ 模态框 ============ -->
+    <div class="modal-root" id="modalRoot" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-head">
+          <h3 class="modal-title" id="modalTitle">标题</h3>
+          <button class="icon-btn" data-close aria-label="关闭">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>
+          </button>
+        </header>
+        <div class="modal-body" id="modalBody"></div>
+        <footer class="modal-foot" id="modalFoot"></footer>
+      </div>
+    </div>
+
+    <!-- ============ Toast ============ -->
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <script src="/webui-static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Build / packaging
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Test / coverage / type caches
+.pytest_cache/
+.hypothesis/
+.tox/
+.nox/
+.mypy_cache/
+.pyre/
+.cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+nosetests.xml
+*.cover
+*.py,cover
+
+# Notebook / local runtime
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+celerybeat-schedule
+celerybeat.pid
+dump.rdb
+
+# IDE / OS
+.vscode/
+.idea/
+.spyderproject
+.spyproject
+.ropeproject
+.python-version
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs / temp / backups
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+*.tmp
+*.temp
+.temp/
+temp/
+*.bak
+*.backup
+
+# Databases
+*.sqlite
+*.db
+db.sqlite3
+db.sqlite3-journal
+
+# Weave local runtime files
+logs/
+caches/
+storage/
+trace_logs/
+downloaded/
+profile/
+uploads/
+static/uploads/
+
+# Environment config
+.env.dev
+.env.prod
+
+# Misc
+.kiro
