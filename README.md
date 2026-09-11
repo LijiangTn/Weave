@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./logo.png" alt="Weave Logo" width="220" />
+  <img src="./logo.png" alt="Weave Logo" width="240" />
 </div>
 
 <div align="center">
